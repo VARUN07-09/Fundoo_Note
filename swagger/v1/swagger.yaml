@@ -1,0 +1,250 @@
+openapi: 3.0.1
+info:
+  title: Funodoo Notes API
+  description: API documentation for Funodoo Notes application
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Local server
+
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                phone_no:
+                  type: string
+      responses:
+        "201":
+          description: User registered successfully
+
+  /login:
+    post:
+      summary: User login
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Login successful
+
+  /forgot_password:
+    post:
+      summary: Forgot password
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        "200":
+          description: Password reset link sent
+
+  /reset_password:
+    post:
+      summary: Reset password
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                new_password:
+                  type: string
+      responses:
+        "200":
+          description: Password reset successful
+
+  /profile:
+    get:
+      summary: Get user profile
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successfully retrieved user profile
+
+  /notes/create:
+    post:
+      summary: Create a new note
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+                color:
+                  type: string
+      responses:
+        "201":
+          description: Note created successfully
+
+  /notes:
+    get:
+      summary: Get all notes
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successfully retrieved all notes
+
+  /notes/{id}:
+    get:
+      summary: Get a note by ID
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successfully retrieved the note
+
+    put:
+      summary: Update a note
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+                color:
+                  type: string
+      responses:
+        "200":
+          description: Note updated successfully
+
+  /notes/{id}/trash:
+    post:
+      summary: Move note to trash
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Note moved to trash
+
+  /notes/{id}/archive:
+    post:
+      summary: Archive a note
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Note archived successfully
+
+  /notes/{id}/change_color:
+    post:
+      summary: Change note color
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                color:
+                  type: string
+      responses:
+        "200":
+          description: Note color updated successfully
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
