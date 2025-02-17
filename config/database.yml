@@ -36,3 +36,11 @@ production:
     <<: *primary_production
     database: fundoo_notess_production_cable
     migrations_paths: db/cable_migrate
+test:
+  <<: *default
+  database: fundoo_notess_test
+  host: localhost
+  port: 5432
+  username: postgres
+  password: Varun0709
+
